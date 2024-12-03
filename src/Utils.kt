@@ -6,7 +6,16 @@ import kotlin.io.path.readText
 /**
  * Reads lines from the given input txt file.
  */
-fun readInput(name: String) = Path("src/$name.txt").readText().trim().lines()
+fun readInput(name: String) = Path("input/$name.txt").readText().trim().lines()
+
+/**
+ * Reads input as a columnar structure where columns are space-separated.
+ */
+fun readInputColumns(name: String, delimiter: Regex = "\\s+".toRegex()): List<List<String>> {
+    val lines = readInput(name)
+    val matrix = lines.map { line -> line.split(delimiter) }
+    return matrix[0].indices.map { col -> matrix.map { it[col] } }
+}
 
 /**
  * Converts string to md5 hash.

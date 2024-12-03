@@ -1,21 +1,28 @@
+import kotlin.math.abs
+
+fun parseInputColumnsToSortedInts(name: String): List<List<Int>> =
+    readInputColumns(name).map { it.map(String::toInt).sorted() }
+
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
+    fun part1(input: List<List<Int>>): Int {
+        return input.first().zip(input.last()) { first, last -> +abs(first - last) }.sum()
     }
 
-    fun part2(input: List<String>): Int {
-        return input.size
+    fun part2(input: List<List<Int>>): Int {
+        return input[0].indices.fold(0) { sum, idx ->
+            val number = input.first()[idx]
+            val occurrences = input.last().count { it == number }
+            sum + number * occurrences
+        }
     }
 
-    // Test if implementation meets criteria from the description, like:
-    check(part1(listOf("test_input")) == 1)
+    // Read test inputs
+    val testInput = readInputColumns("Day01_test").map { it.map { it.toInt() }.sorted() }
+    check(part1(testInput) == 11)
+    check(part2(testInput) == 31)
 
-    // Or read a large test input from the `src/Day01_test.txt` file:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
-
-    // Read the input from the `src/Day01.txt` file.
-    val input = readInput("Day01")
+    // Read real input
+    val input = readInputColumns("Day01").map { it.map { it.toInt() }.sorted() }
     part1(input).println()
     part2(input).println()
 }
